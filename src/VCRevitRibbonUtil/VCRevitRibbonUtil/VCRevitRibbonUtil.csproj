@@ -130,6 +130,7 @@
       <HintPath>C:\Program Files\Autodesk\Revit 2018\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPIUI">
@@ -155,6 +156,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PullDownButton.cs" />
     <Compile Include="Ribbon.cs" />
+    <Compile Include="SplitButton.cs" />
     <Compile Include="StackedItem.cs" />
     <Compile Include="Tab.cs" />
     <Compile Include="VCRibbonItem.cs" />

@@ -54,8 +54,8 @@ namespace VCRevitRibbonUtil
                 throw new InvalidOperationException("You must create 2 or three items in the StackedItems");
             }
 
-            var item1 = stackedItem.Buttons[0].Finish();
-            var item2 = stackedItem.Buttons[1].Finish();
+			var item1 = stackedItem.Buttons[0].Finish();
+			var item2 = stackedItem.Buttons[1].Finish();
             if (stackedItem.ItemsCount == 3)
             {
                 var item3 =
