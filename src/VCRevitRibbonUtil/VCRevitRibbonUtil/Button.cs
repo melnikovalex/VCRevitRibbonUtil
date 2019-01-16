@@ -20,13 +20,16 @@ namespace VCRevitRibbonUtil
     {
         protected readonly string _name;
         protected readonly string _text;
-        private readonly string _className;
+		private readonly string _className;
         protected ImageSource _largeImage;
         protected ImageSource _smallImage;
         protected string _description;
         private string _assemblyLocation;
 
-        protected ContextualHelp _contextualHelp;
+		private readonly int sizeSmall = 16;
+		private readonly int sizeLarge = 32;
+
+		protected ContextualHelp _contextualHelp;
 
         public Button(string name, 
                       string text, 
@@ -67,8 +70,15 @@ namespace VCRevitRibbonUtil
             _smallImage = BitmapSourceConverter.ConvertFromImage(smallImage);
             return this;
         }
+		
+		public Button SetImage(Bitmap image)
+		{
+			_smallImage = BitmapSourceConverter.ConvertFromImage(Resizer.ResizeImage(image, sizeSmall, sizeSmall));
+			_largeImage = BitmapSourceConverter.ConvertFromImage(Resizer.ResizeImage(image, sizeLarge, sizeLarge));
+			return this;
+		}
 
-        internal virtual ButtonData Finish()
+		internal virtual ButtonData Finish()
         {
            PushButtonData pushButtonData = 
                 new PushButtonData(_name,

@@ -46,7 +46,6 @@ namespace VCRevitRibbonUtil.Helpers
 
         public static BitmapSource ConvertFromIcon(Icon icon)
         {
-
             try
             {
                 var bs = Imaging

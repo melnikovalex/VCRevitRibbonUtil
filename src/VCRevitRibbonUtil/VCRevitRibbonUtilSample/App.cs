@@ -32,10 +32,8 @@ namespace VCRevitRibbonUtilSample
                     "Button1",
                     typeof (Command1),
                     btn => btn
-                        .SetLargeImage(Resources
+                        .SetImage(Resources
                             ._1348119708_face_monkey_32)
-                        .SetSmallImage(Resources
-                            ._1348119708_face_monkey_16)
                         .SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org"))
 
 
@@ -64,8 +62,8 @@ namespace VCRevitRibbonUtilSample
                     si
                         .CreateButton<Command3>("btn3_1", "Button3",
                             btn => btn
-                                .SetSmallImage(Resources
-                                    ._1348119594_preferences_system_16))
+                                .SetImage(Resources
+									._1348119708_face_monkey_32))
                         .CreateButton<Command4>("btn4_1", "Button4",
                             btn => btn
                                 .SetSmallImage(Resources
@@ -77,10 +75,8 @@ namespace VCRevitRibbonUtilSample
                 .CreatePullDownButton("ADN-CIS_PullDownButton", "ADN-CIS",
                     pdb =>
                     {
-                        pdb.SetLargeImage(Resources
-                            ._1348119708_face_monkey_32)
-                            .SetSmallImage(Resources
-                                ._1348119708_face_monkey_16);
+                        pdb.SetImage(Resources
+                            ._1348119708_face_monkey_32);
                         pdb.CreateButton<Command3>("btn3_1", "Button3",
                             btn => btn
                                 .SetSmallImage(Resources._1348119594_preferences_system_16)

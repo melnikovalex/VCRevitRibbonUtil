@@ -163,16 +163,6 @@ namespace VCRevitRibbonUtilSample.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _1348119708_face_monkey_16 {
-            get {
-                object obj = ResourceManager.GetObject("_1348119708_face_monkey_16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap _1348119708_face_monkey_32 {
             get {
                 object obj = ResourceManager.GetObject("_1348119708_face_monkey_32", resourceCulture);
