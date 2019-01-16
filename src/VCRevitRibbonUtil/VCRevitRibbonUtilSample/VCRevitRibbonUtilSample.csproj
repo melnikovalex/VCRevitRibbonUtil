@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug 2014' OR '$(Configuration)' == 'Release 2014' ">
     <PathToRevit>d:\Program Files\Autodesk\Revit MEP 2014\</PathToRevit>
   </PropertyGroup>
@@ -39,6 +39,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <StartProgram>$(PathToRevit)Revit.exe</StartProgram>
     <StartAction>Program</StartAction>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug 2014' OR '$(Configuration)' == 'Release 2014' ">
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -54,11 +56,13 @@
     <ErrorReport>prompt</ErrorReport>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 2014|AnyCPU'">
     <OutputPath>bin\Release 2014\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -70,15 +74,27 @@
     <ErrorReport>prompt</ErrorReport>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 2018|AnyCPU'">
+    <OutputPath>bin\Release 2018\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 2018|AnyCPU'">
+    <OutputPath>bin\Debug 2018\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 2015|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="RevitAPI">
-      <HintPath>$(PathToRevit)\RevitAPI.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>$(PathToRevit)\RevitAPIUI.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -178,10 +194,10 @@
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2013\VCRevitRibbonUtilSample.dll" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)VCRevitRibbonUtilSample.addin" "$(AppData)\Autodesk\REVIT\Addins\2014"
-copy "$(TargetPath)" "$(AppData)\Autodesk\REVIT\Addins\2014"
+    <PostBuildEvent>copy "$(ProjectDir)VCRevitRibbonUtilSample.addin" "$(AppData)\Autodesk\REVIT\Addins\2018"
 
-copy "$(ProjectDir)VCRevitRibbonUtilSample.addin" "$(AppData)\Autodesk\REVIT\Addins\2015"
-copy "$(TargetPath)" "$(AppData)\Autodesk\REVIT\Addins\2015"</PostBuildEvent>
+copy "$(TargetPath)" "$(AppData)\Autodesk\REVIT\Addins\2018"
+
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

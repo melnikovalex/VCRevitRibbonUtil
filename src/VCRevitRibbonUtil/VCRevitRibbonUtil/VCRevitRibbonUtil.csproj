@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug 2014' OR '$(Configuration)' == 'Release 2014' ">
     <PathToRevit>d:\Program Files\Autodesk\Revit MEP 2014\</PathToRevit>
   </PropertyGroup>
@@ -40,6 +40,7 @@
     <StartProgram>$(PathToRevit)Revit.exe</StartProgram>
     <StartAction>Program</StartAction>
     <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug 2014' OR '$(Configuration)' == 'Release 2014' ">
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -78,15 +79,23 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 2015|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 2018|AnyCPU'">
+    <OutputPath>bin\Release 2018\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 2018|AnyCPU'">
+    <OutputPath>bin\Debug 2018\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdWindows">
-      <HintPath>$(PathToRevit)\AdWindows.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPIUI">
-      <HintPath>$(PathToRevit)\RevitAPIUI.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -95,7 +104,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Core" />
     <Reference Include="UIFramework">
-      <HintPath>$(PathToRevit)\UIFramework.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\UIFramework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -139,10 +148,8 @@
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2013\VCRevitRibbonUtil.dll" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)VCRevitRibbonUtil.addin" "$(AppData)\Autodesk\REVIT\Addins\2014"
-copy "$(TargetPath)" "$(AppData)\Autodesk\REVIT\Addins\2014"
+    <PostBuildEvent>copy "$(TargetPath)" "$(AppData)\Autodesk\Revit\Addins\2018"
 
-copy "$(ProjectDir)VCRevitRibbonUtil.addin" "$(AppData)\Autodesk\REVIT\Addins\2015"
-copy "$(TargetPath)" "$(AppData)\Autodesk\REVIT\Addins\2015"</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
