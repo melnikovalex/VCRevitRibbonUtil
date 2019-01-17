@@ -54,24 +54,30 @@ namespace VCRevitRibbonUtil
             return this;
         }
 
-        public Button SetLargeImage(Bitmap largeImage)
-        {
-            _largeImage = BitmapSourceConverter.ConvertFromImage(largeImage);
-            return this;
-        }
+		public Button SetLargeImage(Bitmap largeImage, bool autoScale = false)
+		{
+			if (autoScale)
+				_largeImage = BitmapSourceConverter.ConvertFromImage(Resizer.ResizeImage(largeImage, sizeLarge, sizeLarge));
+			else
+				_largeImage = BitmapSourceConverter.ConvertFromImage(largeImage);
+			return this;
+		}
 
-        public Button SetSmallImage(ImageSource smallImage)
-        {
-            _smallImage = smallImage;
-            return this;
-        }
+		public Button SetSmallImage(ImageSource smallImage)
+		{
+			_smallImage = smallImage;
+			return this;
+		}
 
-        public Button SetSmallImage(Bitmap smallImage)
-        {
-            _smallImage = BitmapSourceConverter.ConvertFromImage(smallImage);
-            return this;
-        }
-		
+		public Button SetSmallImage(Bitmap smallImage, bool autoScale = false)
+		{
+			if (autoScale)
+				_smallImage = BitmapSourceConverter.ConvertFromImage(Resizer.ResizeImage(smallImage, sizeSmall, sizeSmall));
+			else
+				_smallImage = BitmapSourceConverter.ConvertFromImage(smallImage);
+			return this;
+		}
+
 		public Button SetImage(Bitmap image)
 		{
 			_smallImage = BitmapSourceConverter.ConvertFromImage(Resizer.ResizeImage(image, sizeSmall, sizeSmall));
