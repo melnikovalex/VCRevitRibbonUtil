@@ -21,6 +21,8 @@ namespace VCRevitRibbonUtilSample
 {
 	class App : IExternalApplication
 	{
+		static readonly string _namespace_prefix = typeof(App).Namespace + ".";
+
 		public Result OnStartup(UIControlledApplication a)
 		{
 			Ribbon ribbon = new Ribbon(a);
@@ -34,8 +36,8 @@ namespace VCRevitRibbonUtilSample
 					btn => btn
 						.SetImage(Resources
 							._1348119708_face_monkey_32)
-						.SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org"))
-
+						.SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org")
+						.SetAvailability(_namespace_prefix + "ExtendAvailabilityZeroDocuments"))
 
 				.CreateSeparator()
 

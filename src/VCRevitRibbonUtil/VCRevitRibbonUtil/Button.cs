@@ -29,6 +29,7 @@ namespace VCRevitRibbonUtil
 		private readonly int sizeSmall = 16;
 		private readonly int sizeLarge = 32;
 
+		protected string _availabilityClassName;
 		protected ContextualHelp _contextualHelp;
 
         public Button(string name, 
@@ -106,6 +107,10 @@ namespace VCRevitRibbonUtil
                 pushButtonData.SetContextualHelp(_contextualHelp);
             }
 
+			if(_availabilityClassName!=null)
+			{
+				pushButtonData.AvailabilityClassName = _availabilityClassName;
+			}
             //_panel.Source.AddItem(pushButtonData);
 
             return pushButtonData;
@@ -131,5 +136,12 @@ namespace VCRevitRibbonUtil
 
             return this;
         }
-    }
+
+		public Button SetAvailability(string availabilityClassName)
+		{
+			_availabilityClassName = availabilityClassName;
+
+			return this;
+		}
+	}
 }
