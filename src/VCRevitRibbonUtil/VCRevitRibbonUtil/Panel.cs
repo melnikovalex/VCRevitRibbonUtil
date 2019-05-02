@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Autodesk.Revit.UI;
 
 namespace VCRevitRibbonUtil
@@ -54,20 +55,32 @@ namespace VCRevitRibbonUtil
                 throw new InvalidOperationException("You must create 2 or three items in the StackedItems");
             }
 
+			List<RibbonItem> ribbonItems;
 			var item1 = stackedItem.Buttons[0].Finish();
 			var item2 = stackedItem.Buttons[1].Finish();
-            if (stackedItem.ItemsCount == 3)
-            {
-                var item3 =
-                    stackedItem.Buttons[2].Finish();
-                _panel.AddStackedItems(item1, item2, item3);
-            }
-            else
-            {
-                _panel.AddStackedItems(item1, item2);
-            }
 
-            return this;
+			if (stackedItem.ItemsCount == 3)
+			{
+				var item3 =
+					stackedItem.Buttons[2].Finish();
+				ribbonItems = _panel.AddStackedItems(item1, item2, item3) as List<RibbonItem>;
+			}
+			else
+			{
+				ribbonItems = _panel.AddStackedItems(item1, item2) as List<RibbonItem>;
+			}
+
+
+			foreach (RibbonItem ri in ribbonItems)
+			{
+				if (ri.GetType() == typeof(Autodesk.Revit.UI.PulldownButton))
+				{
+					int i = ribbonItems.IndexOf(ri);
+					(stackedItem.Buttons[i] as PulldownButton).BuildButtons(ri as Autodesk.Revit.UI.PulldownButton);
+					(stackedItem.Buttons[i] as PulldownButton).RibbonItem = ri;
+				}
+			}
+			return this;
         }
 
         /// <summary>

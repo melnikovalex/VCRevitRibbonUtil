@@ -64,6 +64,17 @@ namespace VCRevitRibbonUtil
             return new Tab(this, tabTitle);
         }
 
+		public bool TabExists(string tabTitle)
+		{
+			foreach (var tab in _ribbonControl.Tabs)
+			{
+				if (tab.Title.Equals(tabTitle))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
         public Tab Tab(Autodesk.Revit.UI.Tab systemTab)
         {
