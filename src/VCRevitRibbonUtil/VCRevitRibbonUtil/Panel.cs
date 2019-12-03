@@ -1,11 +1,11 @@
-/* 
+/*
  * Copyright 2012 © Victor Chekalin
- * 
- * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
  * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
  * PARTICULAR PURPOSE.
- * 
+ *
  */
 
 using System;
@@ -24,7 +24,6 @@ namespace VCRevitRibbonUtil
             _tab = tab;
             _panel = panel;
         }
-
 
         internal RibbonPanel Source
         {
@@ -55,32 +54,31 @@ namespace VCRevitRibbonUtil
                 throw new InvalidOperationException("You must create 2 or three items in the StackedItems");
             }
 
-			List<RibbonItem> ribbonItems;
-			var item1 = stackedItem.Buttons[0].Finish();
-			var item2 = stackedItem.Buttons[1].Finish();
+            List<RibbonItem> ribbonItems;
+            var item1 = stackedItem.Buttons[0].Finish();
+            var item2 = stackedItem.Buttons[1].Finish();
 
-			if (stackedItem.ItemsCount == 3)
-			{
-				var item3 =
-					stackedItem.Buttons[2].Finish();
-				ribbonItems = _panel.AddStackedItems(item1, item2, item3) as List<RibbonItem>;
-			}
-			else
-			{
-				ribbonItems = _panel.AddStackedItems(item1, item2) as List<RibbonItem>;
-			}
+            if (stackedItem.ItemsCount == 3)
+            {
+                var item3 =
+                    stackedItem.Buttons[2].Finish();
+                ribbonItems = _panel.AddStackedItems(item1, item2, item3) as List<RibbonItem>;
+            }
+            else
+            {
+                ribbonItems = _panel.AddStackedItems(item1, item2) as List<RibbonItem>;
+            }
 
-
-			foreach (RibbonItem ri in ribbonItems)
-			{
-				if (ri.GetType() == typeof(Autodesk.Revit.UI.PulldownButton))
-				{
-					int i = ribbonItems.IndexOf(ri);
-					(stackedItem.Buttons[i] as PulldownButton).BuildButtons(ri as Autodesk.Revit.UI.PulldownButton);
-					(stackedItem.Buttons[i] as PulldownButton).RibbonItem = ri;
-				}
-			}
-			return this;
+            foreach (RibbonItem ri in ribbonItems)
+            {
+                if (ri.GetType() == typeof(Autodesk.Revit.UI.PulldownButton))
+                {
+                    int i = ribbonItems.IndexOf(ri);
+                    (stackedItem.Buttons[i] as PulldownButton).BuildButtons(ri as Autodesk.Revit.UI.PulldownButton);
+                    (stackedItem.Buttons[i] as PulldownButton).RibbonItem = ri;
+                }
+            }
+            return this;
         }
 
         /// <summary>
@@ -103,11 +101,11 @@ namespace VCRevitRibbonUtil
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
         public Panel CreateButton<TExternalCommandClass>(string name,
-                                  string text, 
+                                  string text,
                                   Action<Button> action)
             where TExternalCommandClass : class, IExternalCommand
         {
-            var commandClassType = typeof (TExternalCommandClass);           
+            var commandClassType = typeof(TExternalCommandClass);
 
             return CreateButton(name, text, commandClassType, action);
         }
@@ -117,7 +115,7 @@ namespace VCRevitRibbonUtil
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface. 
+        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <returns>Panel where button were created</returns>
         public Panel CreateButton(string name,
@@ -132,13 +130,13 @@ namespace VCRevitRibbonUtil
         /// </summary>
         /// <param name="name">Internal name of the button</param>
         /// <param name="text">Text user will see</param>
-        /// <param name="externalCommandType">Class which implements IExternalCommand interface. 
+        /// <param name="externalCommandType">Class which implements IExternalCommand interface.
         /// This command will be execute when user push the button</param>
         /// <param name="action">Additional action with whe button</param>
         /// <returns>Panel where button were created</returns>
         public Panel CreateButton(string name,
                                   string text,
-                                  Type externalCommandType,  
+                                  Type externalCommandType,
                                   Action<Button> action)
         {
             Button button = new Button(name,
@@ -157,7 +155,7 @@ namespace VCRevitRibbonUtil
         }
 
         public Panel CreatePullDownButton(string name,
-                                  string text,                                  
+                                  string text,
                                   Action<PulldownButton> action)
         {
             PulldownButton button = new PulldownButton(name,
@@ -171,6 +169,28 @@ namespace VCRevitRibbonUtil
             var buttonData = button.Finish();
 
             var ribbonItem = _panel.AddItem(buttonData) as Autodesk.Revit.UI.PulldownButton;
+
+            button.BuildButtons(ribbonItem);
+
+            button.RibbonItem = ribbonItem;
+
+            return this;
+        }
+
+        public Panel CreateSplitButton(string name,
+                          string text,
+                          Action<SplitButton> action)
+        {
+            SplitButton button = new SplitButton(name, text);
+
+            if (action != null)
+            {
+                action.Invoke(button);
+            }
+
+            var buttonData = button.Finish();
+
+            var ribbonItem = _panel.AddItem(buttonData) as Autodesk.Revit.UI.SplitButton;
 
             button.BuildButtons(ribbonItem);
 
