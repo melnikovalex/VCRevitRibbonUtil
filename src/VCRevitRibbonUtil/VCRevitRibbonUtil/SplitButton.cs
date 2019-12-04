@@ -18,10 +18,12 @@ namespace VCRevitRibbonUtil
         //protected ContextualHelp _contextualHelp;
 
         private readonly IList<Button> _buttons = new List<Button>();
+        private readonly dynamic _parentElement;
 
-        public SplitButton(string name, string text) :
+        public SplitButton(dynamic parentElement, string name, string text) :
             base(name, text, null)
         {
+            _parentElement = parentElement;
         }
 
         internal override ButtonData Finish()
@@ -38,9 +40,9 @@ namespace VCRevitRibbonUtil
                 splitButtonData.Image = _smallImage;
             }
 
-            if (_description != null)
+            if (_longDescription != null)
             {
-                splitButtonData.LongDescription = _description;
+                splitButtonData.LongDescription = _longDescription;
             }
 
             if (_contextualHelp != null)
@@ -100,11 +102,21 @@ namespace VCRevitRibbonUtil
             get { return _buttons; }
         }
 
-        internal void BuildButtons(Autodesk.Revit.UI.SplitButton SplitButton)
+        internal void BuildButtons(Autodesk.Revit.UI.SplitButton splitButton)
         {
             foreach (var button in Buttons)
             {
-                SplitButton.AddPushButton(button.Finish() as PushButtonData);
+                var buttonData = button.Finish();
+                if (buttonData is PushButtonData && button.alwaysAvailable && _parentElement._availabilityClassName != null)
+                {
+                    (buttonData as PushButtonData).AvailabilityClassName = _parentElement._availabilityClassName;
+                }
+                while (_parentElement.commandNamesTaken.Contains(buttonData.Name))
+                {
+                    buttonData.Name = buttonData.Name + "_";
+                }
+                _parentElement.commandNamesTaken.Add(buttonData.Name);
+                splitButton.AddPushButton(buttonData as PushButtonData);
             }
         }
     }

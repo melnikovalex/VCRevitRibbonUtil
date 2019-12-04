@@ -18,11 +18,15 @@ namespace VCRevitRibbonUtil
     {
         private readonly Tab _tab;
         private readonly RibbonPanel _panel;
+        internal readonly string _availabilityClassName;
+        internal List<string> commandNamesTaken;
 
         public Panel(Tab tab, RibbonPanel panel)
         {
             _tab = tab;
             _panel = panel;
+            _availabilityClassName = tab.Ribbon._availabilityClassName;
+            commandNamesTaken = tab.Ribbon.commandNamesTaken;
         }
 
         internal RibbonPanel Source
@@ -79,6 +83,12 @@ namespace VCRevitRibbonUtil
                 }
             }
             return this;
+        }
+
+        public Panel CreateButton<TExternalCommandClass>()
+            where TExternalCommandClass : CommandDescription, IExternalCommand
+        {
+            return CreateButton<TExternalCommandClass>(null, null, null);
         }
 
         /// <summary>
@@ -148,7 +158,16 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
+            if (button.alwaysAvailable && this.Tab.Ribbon._availabilityClassName != null)
+            {
+                (buttonData as PushButtonData).AvailabilityClassName = this.Tab.Ribbon._availabilityClassName;
+            }
 
+            while (Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
+            {
+                buttonData.Name = buttonData.Name + "_";
+            }
+            Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
             _panel.AddItem(buttonData);
 
             return this;
@@ -158,8 +177,7 @@ namespace VCRevitRibbonUtil
                                   string text,
                                   Action<PulldownButton> action)
         {
-            PulldownButton button = new PulldownButton(name,
-                text);
+            PulldownButton button = new PulldownButton(this, name, text);
 
             if (action != null)
             {
@@ -181,7 +199,7 @@ namespace VCRevitRibbonUtil
                           string text,
                           Action<SplitButton> action)
         {
-            SplitButton button = new SplitButton(name, text);
+            SplitButton button = new SplitButton(this, name, text);
 
             if (action != null)
             {

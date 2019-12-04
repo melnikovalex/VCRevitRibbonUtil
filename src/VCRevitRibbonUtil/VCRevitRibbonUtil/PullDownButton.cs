@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Autodesk.Revit.UI;
 
-
 namespace VCRevitRibbonUtil
 {
     public class PulldownButton : Button
     {
         private readonly IList<Button> _buttons = new List<Button>();
+        private readonly dynamic _parentElement;
 
-        public PulldownButton(string name, string text) :
+        public PulldownButton(dynamic parentElement, string name, string text) :
             base(name, text, null)
         {
+            _parentElement = parentElement;
         }
 
         internal override ButtonData Finish()
@@ -20,7 +21,6 @@ namespace VCRevitRibbonUtil
             PulldownButtonData pulldownButtonData =
                 new PulldownButtonData(_name,
                     _text);
-
 
             if (_largeImage != null)
             {
@@ -32,9 +32,9 @@ namespace VCRevitRibbonUtil
                 pulldownButtonData.Image = _smallImage;
             }
 
-            if (_description != null)
+            if (_longDescription != null)
             {
-                pulldownButtonData.LongDescription = _description;
+                pulldownButtonData.LongDescription = _longDescription;
             }
 
             if (_contextualHelp != null)
@@ -47,6 +47,14 @@ namespace VCRevitRibbonUtil
             //_panel.Source.AddItem(pushButtonData);
 
             return pulldownButtonData;
+        }
+
+        public PulldownButton CreateButton<TExternalCommandClass>()
+                        where TExternalCommandClass : CommandDescription, IExternalCommand
+        {
+            var commandClassType = typeof(TExternalCommandClass);
+
+            return CreateButton(null, null, commandClassType, null);
         }
 
         public PulldownButton CreateButton<TExternalCommandClass>(string name,
@@ -80,7 +88,6 @@ namespace VCRevitRibbonUtil
                                    Type externalCommandType,
                                    Action<Button> action)
         {
-
             var button = new Button(name,
                               text,
                               externalCommandType);
@@ -113,7 +120,17 @@ namespace VCRevitRibbonUtil
         {
             foreach (var button in Buttons)
             {
-                pulldownButton.AddPushButton(button.Finish() as PushButtonData);
+                var buttonData = button.Finish();
+                if (buttonData is PushButtonData && button.alwaysAvailable && _parentElement._availabilityClassName != null)
+                {
+                    (buttonData as PushButtonData).AvailabilityClassName = _parentElement._availabilityClassName;
+                }
+                while (_parentElement.commandNamesTaken.Contains(buttonData.Name))
+                {
+                    buttonData.Name = buttonData.Name + "_";
+                }
+                _parentElement.commandNamesTaken.Add(buttonData.Name);
+                pulldownButton.AddPushButton(buttonData as PushButtonData);
             }
         }
     }

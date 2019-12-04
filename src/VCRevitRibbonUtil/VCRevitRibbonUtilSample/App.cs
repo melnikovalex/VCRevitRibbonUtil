@@ -13,6 +13,7 @@
 using Autodesk.Revit.UI;
 using VCRevitRibbonUtil;
 using VCRevitRibbonUtilSample.Properties;
+using System.Reflection;
 
 #endregion Namespaces
 
@@ -24,7 +25,7 @@ namespace VCRevitRibbonUtilSample
 
         public Result OnStartup(UIControlledApplication a)
         {
-            Ribbon ribbon = new Ribbon(a);
+            Ribbon ribbon = new Ribbon(a, _namespace_prefix + "ExtendAvailabilityZeroDocuments");
 
             ribbon.Tab("MyTab")
                 .Panel("Panel1")
@@ -36,7 +37,7 @@ namespace VCRevitRibbonUtilSample
                         .SetImage(Resources
                             ._1348119708_face_monkey_32)
                         .SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org")
-                        .SetAvailability(_namespace_prefix + "ExtendAvailabilityZeroDocuments"))
+                        .AlwaysAvailable())
 
                 .CreateSeparator()
 
@@ -133,9 +134,17 @@ namespace VCRevitRibbonUtilSample
                 .CreateButton<Command4>("btn4_2", "Button 4");
 
             ribbon
-                .Tab(Autodesk.Revit.UI.Tab.AddIns)
-                .Panel("VC1")
+                .Tab(Autodesk.Revit.UI.Tab.AddIns).Panel("VC1")
                 .CreateButton<Command1>("btn1_1", "Button1");
+            ribbon
+                .Tab("MyTab")
+                .Panel("Panel3")
+                .CreateButton<Command5>()
+                .CreatePullDownButton("pulldown1", "Pulldown", pdb =>
+                {
+                    pdb.CreateButton<Command5>()
+                    .CreateButton<Command5>(null, "Command 5 copy");
+                });
 
             return Result.Succeeded;
         }

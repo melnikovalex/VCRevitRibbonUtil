@@ -15,11 +15,23 @@ using Autodesk.Revit.UI;
 namespace VCRevitRibbonUtilSample
 {
     [Transaction(TransactionMode.ReadOnly)]
-    public class Command4 : IExternalCommand
+    public class Command5 : VCRevitRibbonUtil.CommandDescription, IExternalCommand
     {
+        new public static string Title = "Command 5 Title";
+
+        new public static string LongDescription = "Description 5";
+
+        new public static string ToolTip = "ToolTip";
+
+        new public static System.Drawing.Bitmap Image = Properties.Resources._1348119615_internet_web_browser_32;
+
+        new public static string HelpUrl = "https://google.com";
+
+        new public static bool AlwaysAvaialble = true;
+
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            TaskDialog.Show("VC", "Command4");
+            TaskDialog.Show("VC", "Command5");
 
             return Result.Succeeded;
         }

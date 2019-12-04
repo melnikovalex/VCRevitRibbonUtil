@@ -1,11 +1,11 @@
-/* 
+/*
  * Copyright 2012 © Victor Chekalin
- * 
- * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
  * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
  * PARTICULAR PURPOSE.
- * 
+ *
  */
 
 using System;
@@ -14,99 +14,118 @@ using Autodesk.Revit.UI;
 
 namespace VCRevitRibbonUtil
 {
-	public class StackedItem : VCRibbonItem
-	{
-		private readonly Panel _panel;
-		private readonly IList<Button> _buttons;
+    public class StackedItem : VCRibbonItem
+    {
+        private readonly Panel _panel;
+        private readonly IList<Button> _buttons;
+        private readonly string _availabilityClassName;
+        internal List<string> commandNamesTaken;
 
+        public StackedItem(Panel panel)
+        {
+            _panel = panel;
+            _buttons = new List<Button>(3);
+            _availabilityClassName = panel.Tab.Ribbon._availabilityClassName;
+            commandNamesTaken = panel.Tab.Ribbon.commandNamesTaken;
+        }
 
-		public StackedItem(Panel panel)
-		{
-			_panel = panel;
-			_buttons = new List<Button>(3);
-		}
+        public StackedItem CreateButton<TExternalCommandClass>()
+            where TExternalCommandClass : CommandDescription, IExternalCommand
+        {
+            var commandClassType = typeof(TExternalCommandClass);
 
-		public StackedItem CreateButton<TExternalCommandClass>(string name,
-								  string text)
-			where TExternalCommandClass : class, IExternalCommand
-		{
-			var commandClassType = typeof(TExternalCommandClass);
+            return CreateButton(null, null, commandClassType, null);
+        }
 
-			return CreateButton(name, text, commandClassType, null);
-		}
+        public StackedItem CreateButton<TExternalCommandClass>(string name,
+                                  string text)
+            where TExternalCommandClass : class, IExternalCommand
+        {
+            var commandClassType = typeof(TExternalCommandClass);
 
-		public StackedItem CreateButton<TExternalCommandClass>(string name,
-								  string text,
-								  Action<Button> action)
-			where TExternalCommandClass : class, IExternalCommand
-		{
-			var commandClassType = typeof(TExternalCommandClass);
+            return CreateButton(name, text, commandClassType, null);
+        }
 
-			return CreateButton(name, text, commandClassType, action);
-		}
+        public StackedItem CreateButton<TExternalCommandClass>(string name,
+                                  string text,
+                                  Action<Button> action)
+            where TExternalCommandClass : class, IExternalCommand
+        {
+            var commandClassType = typeof(TExternalCommandClass);
 
-		public StackedItem CreateButton(string name,
-								  string text,
-								  Type externalCommandType)
-		{
-			return CreateButton(name, text, externalCommandType, null);
-		}
+            return CreateButton(name, text, commandClassType, action);
+        }
 
-		public StackedItem CreateButton(string name,
-								   string text,
-								   Type externalCommandType,
-								   Action<Button> action)
-		{
-			if (Buttons.Count == 3)
-			{
-				throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
-			}
+        public StackedItem CreateButton(string name,
+                                  string text,
+                                  Type externalCommandType)
+        {
+            return CreateButton(name, text, externalCommandType, null);
+        }
 
-			var button = new Button(name,
-							  text,
-							  externalCommandType);
-			if (action != null)
-			{
-				action.Invoke(button);
-			}
+        public StackedItem CreateButton(string name,
+                                   string text,
+                                   Type externalCommandType,
+                                   Action<Button> action)
+        {
+            if (Buttons.Count == 3)
+            {
+                throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
+            }
 
-			Buttons.Add(button);
+            var button = new Button(name,
+                              text,
+                              externalCommandType);
+            if (action != null)
+            {
+                action.Invoke(button);
+            }
 
-			return this;
-		}
+            Buttons.Add(button);
 
-		public StackedItem CreatePullDownButton(string name,
-								   string text,
-								   Action<PulldownButton> action)
-		{
-			if (Buttons.Count == 3)
-			{
-				throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
-			}
+            return this;
+        }
 
-			PulldownButton button = new PulldownButton(name,
-				text);
+        public StackedItem CreatePullDownButton(string name,
+                                   string text,
+                                   Action<PulldownButton> action)
+        {
+            if (Buttons.Count == 3)
+            {
+                throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
+            }
 
-			if (action != null)
-			{
-				action.Invoke(button);
-			}
+            PulldownButton button = new PulldownButton(this, name,
+                text);
 
-			var buttonData = button.Finish();
+            if (action != null)
+            {
+                action.Invoke(button);
+            }
 
-			Buttons.Add(button);
+            var buttonData = button.Finish();
+            if (buttonData is PushButtonData && button.alwaysAvailable && this._panel.Tab.Ribbon._availabilityClassName != null)
+                (buttonData as PushButtonData).AvailabilityClassName = this._panel.Tab.Ribbon._availabilityClassName;
 
-			return this;
-		}
+            while (_panel.Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
+            {
+                buttonData.Name = buttonData.Name + "_";
+            }
+            _panel.Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
 
-		public int ItemsCount
-		{
-			get { return Buttons.Count; }
-		}
+            Buttons.Add(button);
 
-		public IList<Button> Buttons
-		{
-			get { return _buttons; }
-		}
-	}
+            return this;
+        }
+
+        public int ItemsCount
+        {
+            get { return Buttons.Count; }
+        }
+
+        public IList<Button> Buttons
+        {
+            get { return _buttons; }
+        }
+    }
 }
