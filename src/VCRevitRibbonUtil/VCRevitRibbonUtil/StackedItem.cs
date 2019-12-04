@@ -18,7 +18,7 @@ namespace VCRevitRibbonUtil
     {
         private readonly Panel _panel;
         private readonly IList<Button> _buttons;
-        private readonly string _availabilityClassName;
+        internal readonly string _availabilityClassName;
         internal List<string> commandNamesTaken;
 
         public StackedItem(Panel panel)
@@ -29,12 +29,12 @@ namespace VCRevitRibbonUtil
             commandNamesTaken = panel.Tab.Ribbon.commandNamesTaken;
         }
 
-        public StackedItem CreateButton<TExternalCommandClass>()
+        public StackedItem CreateButton<TExternalCommandClass>(Action<Button> action = null)
             where TExternalCommandClass : CommandDescription, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
 
-            return CreateButton(null, null, commandClassType, null);
+            return CreateButton(null, null, commandClassType, action);
         }
 
         public StackedItem CreateButton<TExternalCommandClass>(string name,
@@ -104,8 +104,6 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
-            if (buttonData is PushButtonData && button.alwaysAvailable && this._panel.Tab.Ribbon._availabilityClassName != null)
-                (buttonData as PushButtonData).AvailabilityClassName = this._panel.Tab.Ribbon._availabilityClassName;
 
             while (_panel.Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
             {

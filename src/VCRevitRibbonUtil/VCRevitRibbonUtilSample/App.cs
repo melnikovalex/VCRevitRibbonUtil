@@ -144,7 +144,24 @@ namespace VCRevitRibbonUtilSample
                 {
                     pdb.CreateButton<Command5>()
                     .CreateButton<Command5>(null, "Command 5 copy");
-                });
+                })
+                .CreateStackedItems(si =>
+                    si
+                        .CreateButton<Command5>(btn => btn
+                                .SetImage(Resources
+                                    ._1348119708_face_monkey_32))
+                        .CreateButton<Command5>()
+                        .CreatePullDownButton("pulldownbutton", "Pulldown",
+                            pdb =>
+                            {
+                                pdb.SetSmallImage(Resources._1348119553_face_smile_big_16);
+                                pdb.CreateButton<Command5>()
+                                   .CreateButton<Command1>("btn1_2", "Button1",
+                                       btn => btn
+                                           .SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org"))
+                               .SetHelpUrl("http://adn-cis.org/forum");
+                            })
+                );
 
             return Result.Succeeded;
         }

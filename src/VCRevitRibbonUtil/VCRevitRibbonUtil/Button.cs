@@ -49,7 +49,7 @@ namespace VCRevitRibbonUtil
                 _assemblyLocation = _externalCommandType.Assembly.Location;
 
                 if (_name == null)
-                    _name = _className;
+                    _name = _className.Replace(".", "_");
 
                 if (_text == null)
                 {

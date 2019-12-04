@@ -53,6 +53,14 @@ namespace VCRevitRibbonUtil
             return splitButtonData;
         }
 
+        public SplitButton CreateButton<TExternalCommandClass>(Action<Button> action = null)
+                        where TExternalCommandClass : CommandDescription, IExternalCommand
+        {
+            var commandClassType = typeof(TExternalCommandClass);
+
+            return CreateButton(null, null, commandClassType, action);
+        }
+
         public SplitButton CreateButton<TExternalCommandClass>(string name,
                           string text)
                         where TExternalCommandClass : class, IExternalCommand

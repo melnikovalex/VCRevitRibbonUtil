@@ -49,12 +49,12 @@ namespace VCRevitRibbonUtil
             return pulldownButtonData;
         }
 
-        public PulldownButton CreateButton<TExternalCommandClass>()
+        public PulldownButton CreateButton<TExternalCommandClass>(Action<Button> action = null)
                         where TExternalCommandClass : CommandDescription, IExternalCommand
         {
             var commandClassType = typeof(TExternalCommandClass);
 
-            return CreateButton(null, null, commandClassType, null);
+            return CreateButton(null, null, commandClassType, action);
         }
 
         public PulldownButton CreateButton<TExternalCommandClass>(string name,

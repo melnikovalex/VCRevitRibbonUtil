@@ -60,12 +60,34 @@ namespace VCRevitRibbonUtil
 
             List<RibbonItem> ribbonItems;
             var item1 = stackedItem.Buttons[0].Finish();
+            if (item1 is PushButtonData && stackedItem.Buttons[0].alwaysAvailable && _availabilityClassName != null)
+                (item1 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+            while (_tab.Ribbon.commandNamesTaken.Contains(item1.Name))
+            {
+                item1.Name = item1.Name + "_";
+            }
+            _tab.Ribbon.commandNamesTaken.Add(item1.Name);
+
             var item2 = stackedItem.Buttons[1].Finish();
+            if (item2 is PushButtonData && stackedItem.Buttons[1].alwaysAvailable && _availabilityClassName != null)
+                (item2 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+            while (_tab.Ribbon.commandNamesTaken.Contains(item2.Name))
+            {
+                item2.Name = item2.Name + "_";
+            }
+            _tab.Ribbon.commandNamesTaken.Add(item2.Name);
 
             if (stackedItem.ItemsCount == 3)
             {
                 var item3 =
                     stackedItem.Buttons[2].Finish();
+                if (item3 is PushButtonData && stackedItem.Buttons[2].alwaysAvailable && _availabilityClassName != null)
+                    (item3 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+                while (_tab.Ribbon.commandNamesTaken.Contains(item3.Name))
+                {
+                    item3.Name = item3.Name + "_";
+                }
+                _tab.Ribbon.commandNamesTaken.Add(item3.Name);
                 ribbonItems = _panel.AddStackedItems(item1, item2, item3) as List<RibbonItem>;
             }
             else
@@ -85,10 +107,10 @@ namespace VCRevitRibbonUtil
             return this;
         }
 
-        public Panel CreateButton<TExternalCommandClass>()
+        public Panel CreateButton<TExternalCommandClass>(Action<Button> action = null)
             where TExternalCommandClass : CommandDescription, IExternalCommand
         {
-            return CreateButton<TExternalCommandClass>(null, null, null);
+            return CreateButton<TExternalCommandClass>(null, null, action);
         }
 
         /// <summary>
@@ -158,9 +180,9 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
-            if (button.alwaysAvailable && this.Tab.Ribbon._availabilityClassName != null)
+            if (button.alwaysAvailable && this._availabilityClassName != null)
             {
-                (buttonData as PushButtonData).AvailabilityClassName = this.Tab.Ribbon._availabilityClassName;
+                (buttonData as PushButtonData).AvailabilityClassName = this._availabilityClassName;
             }
 
             while (Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
