@@ -213,5 +213,12 @@ namespace VCRevitRibbonUtil
             alwaysAvailable = true;
             return this;
         }
+
+        [Obsolete]
+        public Button SetAvailability(string x)
+        {
+            AlwaysAvailable();
+            return this;
+        }
     }
 }
