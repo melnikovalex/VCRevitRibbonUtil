@@ -147,7 +147,7 @@ namespace VCRevitRibbonUtil
                         if (fieldHelpUrl != null) SetHelpUrl(fieldHelpUrl.GetValue(_externalCommandType).ToString());
                     }
 
-                    FieldInfo fieldAlwaysAvailable = _externalCommandType.GetField("AlwaysAvaialble");
+                    FieldInfo fieldAlwaysAvailable = _externalCommandType.GetField("AlwaysAvailable");
                     if (fieldAlwaysAvailable != null && (bool)fieldAlwaysAvailable.GetValue(_externalCommandType))
                         AlwaysAvailable();
                 }
