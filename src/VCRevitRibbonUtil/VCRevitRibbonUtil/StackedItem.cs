@@ -20,12 +20,14 @@ namespace VCRevitRibbonUtil
         private readonly IList<Button> _buttons;
         internal readonly string _availabilityClassName;
         internal List<string> commandNamesTaken;
+        internal bool _autoLineBreaks = false;
 
         public StackedItem(Panel panel)
         {
             _panel = panel;
             _buttons = new List<Button>(3);
             _availabilityClassName = panel.Tab.Ribbon._availabilityClassName;
+            _autoLineBreaks = panel.Tab.Ribbon._autoLineBreaks;
             commandNamesTaken = panel.Tab.Ribbon.commandNamesTaken;
         }
 
@@ -95,8 +97,36 @@ namespace VCRevitRibbonUtil
                 throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
             }
 
-            PulldownButton button = new PulldownButton(this, name,
-                text);
+            PulldownButton button = new PulldownButton(this, name, text);
+
+            if (action != null)
+            {
+                action.Invoke(button);
+            }
+
+            var buttonData = button.Finish();
+
+            while (_panel.Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
+            {
+                buttonData.Name = buttonData.Name + "_";
+            }
+            _panel.Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
+
+            Buttons.Add(button);
+
+            return this;
+        }
+
+        public StackedItem CreateSplitButton(string name,
+                           string text,
+                           Action<SplitButton> action)
+        {
+            if (Buttons.Count == 3)
+            {
+                throw new InvalidOperationException("You cannot create more than three items in the StackedItem");
+            }
+
+            SplitButton button = new SplitButton(this, name, text);
 
             if (action != null)
             {

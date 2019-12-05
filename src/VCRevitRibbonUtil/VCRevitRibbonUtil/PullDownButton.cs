@@ -130,6 +130,13 @@ namespace VCRevitRibbonUtil
                     buttonData.Name = buttonData.Name + "_";
                 }
                 _parentElement.commandNamesTaken.Add(buttonData.Name);
+
+                // Add break lines
+                if (_parentElement._autoLineBreaks)
+                {
+                    buttonData.Text = LineBreaks.Format(buttonData.Text);
+                }
+
                 pulldownButton.AddPushButton(buttonData as PushButtonData);
             }
         }

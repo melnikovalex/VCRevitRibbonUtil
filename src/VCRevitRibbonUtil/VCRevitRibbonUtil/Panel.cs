@@ -20,12 +20,14 @@ namespace VCRevitRibbonUtil
         private readonly RibbonPanel _panel;
         internal readonly string _availabilityClassName;
         internal List<string> commandNamesTaken;
+        internal bool _autoLineBreaks = false;
 
         public Panel(Tab tab, RibbonPanel panel)
         {
             _tab = tab;
             _panel = panel;
             _availabilityClassName = tab.Ribbon._availabilityClassName;
+            _autoLineBreaks = tab.Ribbon._autoLineBreaks;
             commandNamesTaken = tab.Ribbon.commandNamesTaken;
         }
 
@@ -102,6 +104,12 @@ namespace VCRevitRibbonUtil
                     int i = ribbonItems.IndexOf(ri);
                     (stackedItem.Buttons[i] as PulldownButton).BuildButtons(ri as Autodesk.Revit.UI.PulldownButton);
                     (stackedItem.Buttons[i] as PulldownButton).RibbonItem = ri;
+                }
+                else if (ri.GetType() == typeof(Autodesk.Revit.UI.SplitButton))
+                {
+                    int i = ribbonItems.IndexOf(ri);
+                    (stackedItem.Buttons[i] as SplitButton).BuildButtons(ri as Autodesk.Revit.UI.SplitButton);
+                    (stackedItem.Buttons[i] as SplitButton).RibbonItem = ri;
                 }
             }
             return this;
@@ -190,6 +198,13 @@ namespace VCRevitRibbonUtil
                 buttonData.Name = buttonData.Name + "_";
             }
             Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
+
+            // Add break lines
+            if (Tab.Ribbon._autoLineBreaks)
+            {
+                buttonData.Text = LineBreaks.Format(buttonData.Text);
+            }
+
             _panel.AddItem(buttonData);
 
             return this;
@@ -207,6 +222,12 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
+
+            while (Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
+            {
+                buttonData.Name = buttonData.Name + "_";
+            }
+            Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
 
             var ribbonItem = _panel.AddItem(buttonData) as Autodesk.Revit.UI.PulldownButton;
 
@@ -229,6 +250,12 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
+
+            while (Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
+            {
+                buttonData.Name = buttonData.Name + "_";
+            }
+            Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
 
             var ribbonItem = _panel.AddItem(buttonData) as Autodesk.Revit.UI.SplitButton;
 

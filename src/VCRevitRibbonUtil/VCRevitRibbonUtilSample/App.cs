@@ -25,7 +25,7 @@ namespace VCRevitRibbonUtilSample
 
         public Result OnStartup(UIControlledApplication a)
         {
-            Ribbon ribbon = new Ribbon(a, _namespace_prefix + "ExtendAvailabilityZeroDocuments");
+            Ribbon ribbon = new Ribbon(a, _namespace_prefix + "ExtendAvailabilityZeroDocuments", true);
 
             ribbon.Tab("MyTab")
                 .Panel("Panel1")
@@ -140,17 +140,19 @@ namespace VCRevitRibbonUtilSample
                 .Tab("MyTab")
                 .Panel("Panel3")
                 .CreateButton<Command5>()
-                .CreatePullDownButton("pulldown1", "Pulldown", pdb =>
+                .CreateSplitButton("spb", "spb", spb =>
                 {
-                    pdb.CreateButton<Command5>()
-                    .CreateButton<Command5>(null, "Command 5 copy");
+                    spb.CreateButton<Command5>()
+                    .CreateButton<Command5>(null, "Command 5 copy copy copy copy");
                 })
                 .CreateStackedItems(si =>
                     si
                         .CreateButton<Command5>(btn => btn
                                 .SetImage(Resources
                                     ._1348119708_face_monkey_32))
-                        .CreateButton<Command5>()
+                        .CreateSplitButton("spb1", "spb1", spb => spb
+                            .CreateButton<Command5>()
+                            .CreateButton<Command5>())
                         .CreatePullDownButton("pulldownbutton", "Pulldown",
                             pdb =>
                             {

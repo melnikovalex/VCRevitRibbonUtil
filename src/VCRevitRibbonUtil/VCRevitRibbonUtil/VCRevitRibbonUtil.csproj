@@ -124,6 +124,8 @@
     <OutputPath>bin\x64\Debug 2018\</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdWindows">
@@ -156,6 +158,7 @@
     <Compile Include="Helpers\Resizer.cs" />
     <Compile Include="Helpers\BitmapSourceConverter.cs" />
     <Compile Include="CommandDescription.cs" />
+    <Compile Include="LineBreaks.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PullDownButton.cs" />

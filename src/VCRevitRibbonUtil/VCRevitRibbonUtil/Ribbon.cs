@@ -22,8 +22,9 @@ namespace VCRevitRibbonUtil
         private readonly RibbonControl _ribbonControl;
         internal string _availabilityClassName;
         internal List<string> commandNamesTaken = new List<string>();
+        internal bool _autoLineBreaks = false;
 
-        public Ribbon(UIControlledApplication application, string availabilityClassName = null)
+        public Ribbon(UIControlledApplication application, string availabilityClassName = null, bool autoLineBreaks = false)
         {
             _application = application;
             _ribbonControl = (RibbonControl)RevitRibbonControl.RibbonControl;
@@ -31,6 +32,17 @@ namespace VCRevitRibbonUtil
                 throw new NotSupportedException("Could not initialize Revit ribbon control");
 
             _availabilityClassName = availabilityClassName;
+            _autoLineBreaks = autoLineBreaks;
+        }
+
+        public Ribbon(UIControlledApplication application, bool autoLineBreaks)
+        {
+            _application = application;
+            _ribbonControl = (RibbonControl)RevitRibbonControl.RibbonControl;
+            if (_ribbonControl == null)
+                throw new NotSupportedException("Could not initialize Revit ribbon control");
+
+            _autoLineBreaks = autoLineBreaks;
         }
 
         public static Ribbon GetApplicationRibbon(UIControlledApplication application)

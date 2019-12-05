@@ -17,7 +17,7 @@ namespace VCRevitRibbonUtilSample
     [Transaction(TransactionMode.ReadOnly)]
     public class Command5 : VCRevitRibbonUtil.CommandDescription, IExternalCommand
     {
-        new public static string Title = "Command 5 Title";
+        new public static string Title = "Command 5 long long long Title";
 
         new public static string LongDescription = "Description 5";
 
