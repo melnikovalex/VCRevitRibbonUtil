@@ -18,7 +18,8 @@ namespace VCRevitRibbonUtil
     {
         private readonly Panel _panel;
         private readonly IList<Button> _buttons;
-        internal readonly string _availabilityClassName;
+        internal readonly string _classNameAvailable;
+        internal readonly string _classNameDisabled;
         internal List<string> commandNamesTaken;
         internal bool _autoLineBreaks = false;
 
@@ -26,7 +27,8 @@ namespace VCRevitRibbonUtil
         {
             _panel = panel;
             _buttons = new List<Button>(3);
-            _availabilityClassName = panel.Tab.Ribbon._availabilityClassName;
+            _classNameAvailable = panel.Tab.Ribbon._classNameAvailable;
+            _classNameDisabled = panel.Tab.Ribbon._classNameDisabled;
             _autoLineBreaks = panel.Tab.Ribbon._autoLineBreaks;
             commandNamesTaken = panel.Tab.Ribbon.commandNamesTaken;
         }

@@ -32,7 +32,7 @@ namespace VCRevitRibbonUtil
         private readonly int sizeLarge = 32;
         protected ContextualHelp _contextualHelp;
 
-        internal bool alwaysAvailable = false;
+        internal bool? alwaysAvailable = null;
         private readonly Type _externalCommandType;
 
         public Button(string name,
@@ -147,9 +147,14 @@ namespace VCRevitRibbonUtil
                         if (fieldHelpUrl != null) SetHelpUrl(fieldHelpUrl.GetValue(_externalCommandType).ToString());
                     }
 
-                    FieldInfo fieldAlwaysAvailable = _externalCommandType.GetField("AlwaysAvailable");
-                    if (fieldAlwaysAvailable != null && (bool)fieldAlwaysAvailable.GetValue(_externalCommandType))
-                        AlwaysAvailable();
+                    FieldInfo fieldAlwaysAvailable = _externalCommandType.GetField("Available");
+                    if (fieldAlwaysAvailable != null)
+                    {
+                        if ((bool?)fieldAlwaysAvailable.GetValue(_externalCommandType) == true)
+                            AlwaysAvailable();
+                        else if ((bool?)fieldAlwaysAvailable.GetValue(_externalCommandType) == false)
+                            NotAvailable();
+                    }
                 }
             }
             if (_largeImage != null)
@@ -211,6 +216,12 @@ namespace VCRevitRibbonUtil
         public Button AlwaysAvailable()
         {
             alwaysAvailable = true;
+            return this;
+        }
+
+        public Button NotAvailable()
+        {
+            alwaysAvailable = false;
             return this;
         }
 

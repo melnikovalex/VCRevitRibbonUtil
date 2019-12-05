@@ -27,7 +27,7 @@ namespace VCRevitRibbonUtilSample
 
         new public static string HelpUrl = "https://google.com";
 
-        new public static bool AlwaysAvailable = true;
+        new public static bool Available = true;
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {

@@ -18,7 +18,8 @@ namespace VCRevitRibbonUtil
     {
         private readonly Tab _tab;
         private readonly RibbonPanel _panel;
-        internal readonly string _availabilityClassName;
+        internal readonly string _classNameAvailable;
+        internal readonly string _classNameDisabled;
         internal List<string> commandNamesTaken;
         internal bool _autoLineBreaks = false;
 
@@ -26,7 +27,8 @@ namespace VCRevitRibbonUtil
         {
             _tab = tab;
             _panel = panel;
-            _availabilityClassName = tab.Ribbon._availabilityClassName;
+            _classNameAvailable = tab.Ribbon._classNameAvailable;
+            _classNameDisabled = tab.Ribbon._classNameDisabled;
             _autoLineBreaks = tab.Ribbon._autoLineBreaks;
             commandNamesTaken = tab.Ribbon.commandNamesTaken;
         }
@@ -62,8 +64,13 @@ namespace VCRevitRibbonUtil
 
             List<RibbonItem> ribbonItems;
             var item1 = stackedItem.Buttons[0].Finish();
-            if (item1 is PushButtonData && stackedItem.Buttons[0].alwaysAvailable && _availabilityClassName != null)
-                (item1 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+            if (item1 is PushButtonData && stackedItem.Buttons[0].alwaysAvailable != null)
+            {
+                if (stackedItem.Buttons[0].alwaysAvailable == true && _classNameAvailable != null)
+                    (item1 as PushButtonData).AvailabilityClassName = _classNameAvailable;
+                else if (stackedItem.Buttons[0].alwaysAvailable == false && _classNameDisabled != null)
+                    (item1 as PushButtonData).AvailabilityClassName = _classNameDisabled;
+            }
             while (_tab.Ribbon.commandNamesTaken.Contains(item1.Name))
             {
                 item1.Name = item1.Name + "_";
@@ -71,8 +78,11 @@ namespace VCRevitRibbonUtil
             _tab.Ribbon.commandNamesTaken.Add(item1.Name);
 
             var item2 = stackedItem.Buttons[1].Finish();
-            if (item2 is PushButtonData && stackedItem.Buttons[1].alwaysAvailable && _availabilityClassName != null)
-                (item2 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+            if (stackedItem.Buttons[1].alwaysAvailable == true && _classNameAvailable != null)
+                (item2 as PushButtonData).AvailabilityClassName = _classNameAvailable;
+            else if (stackedItem.Buttons[1].alwaysAvailable == false && _classNameDisabled != null)
+                (item2 as PushButtonData).AvailabilityClassName = _classNameDisabled;
+
             while (_tab.Ribbon.commandNamesTaken.Contains(item2.Name))
             {
                 item2.Name = item2.Name + "_";
@@ -83,8 +93,11 @@ namespace VCRevitRibbonUtil
             {
                 var item3 =
                     stackedItem.Buttons[2].Finish();
-                if (item3 is PushButtonData && stackedItem.Buttons[2].alwaysAvailable && _availabilityClassName != null)
-                    (item3 as PushButtonData).AvailabilityClassName = _availabilityClassName;
+                if (stackedItem.Buttons[2].alwaysAvailable == true && _classNameAvailable != null)
+                    (item3 as PushButtonData).AvailabilityClassName = _classNameAvailable;
+                else if (stackedItem.Buttons[2].alwaysAvailable == false && _classNameDisabled != null)
+                    (item3 as PushButtonData).AvailabilityClassName = _classNameDisabled;
+
                 while (_tab.Ribbon.commandNamesTaken.Contains(item3.Name))
                 {
                     item3.Name = item3.Name + "_";
@@ -188,9 +201,12 @@ namespace VCRevitRibbonUtil
             }
 
             var buttonData = button.Finish();
-            if (button.alwaysAvailable && this._availabilityClassName != null)
+            if (button.alwaysAvailable != null)
             {
-                (buttonData as PushButtonData).AvailabilityClassName = this._availabilityClassName;
+                if (button.alwaysAvailable == true && this._classNameAvailable != null)
+                    (buttonData as PushButtonData).AvailabilityClassName = this._classNameAvailable;
+                if (button.alwaysAvailable == false && this._classNameDisabled != null)
+                    (buttonData as PushButtonData).AvailabilityClassName = this._classNameDisabled;
             }
 
             while (Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))

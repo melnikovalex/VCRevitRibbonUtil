@@ -25,7 +25,10 @@ namespace VCRevitRibbonUtilSample
 
         public Result OnStartup(UIControlledApplication a)
         {
-            Ribbon ribbon = new Ribbon(a, _namespace_prefix + "ExtendAvailabilityZeroDocuments", true);
+            Ribbon ribbon = new Ribbon(a,
+                _namespace_prefix + "ExtendAvailabilityZeroDocuments",
+                _namespace_prefix + "ExtendAvailabilityDisabled",
+                true);
 
             ribbon.Tab("MyTab")
                 .Panel("Panel1")
@@ -37,9 +40,8 @@ namespace VCRevitRibbonUtilSample
                         .SetImage(Resources
                             ._1348119708_face_monkey_32)
                         .SetContextualHelp(ContextualHelpType.Url, "http://adn-cis.org")
-                        .AlwaysAvailable())
-
-                .CreateSeparator()
+                        .NotAvailable())
+                .CreateButton<Command1>()
 
                 .CreateButton<Command2>("btn2",
                     "Button2",

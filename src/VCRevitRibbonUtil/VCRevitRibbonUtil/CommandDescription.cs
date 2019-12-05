@@ -15,6 +15,6 @@ namespace VCRevitRibbonUtil
         public static System.Drawing.Bitmap LargeImage;
         public static System.Drawing.Bitmap Image;
         public static string HelpUrl;
-        public static bool AlwaysAvailable;
+        public static bool Available;
     }
 }

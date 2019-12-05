@@ -121,9 +121,12 @@ namespace VCRevitRibbonUtil
             foreach (var button in Buttons)
             {
                 var buttonData = button.Finish();
-                if (buttonData is PushButtonData && button.alwaysAvailable && _parentElement._availabilityClassName != null)
+                if (buttonData is PushButtonData && button.alwaysAvailable != null)
                 {
-                    (buttonData as PushButtonData).AvailabilityClassName = _parentElement._availabilityClassName;
+                    if (button.alwaysAvailable == true && _parentElement._classNameAvailable != null)
+                        (buttonData as PushButtonData).AvailabilityClassName = _parentElement._classNameAvailable;
+                    if (button.alwaysAvailable == false && _parentElement._classNameDisabled != null)
+                        (buttonData as PushButtonData).AvailabilityClassName = _parentElement._classNameDisabled;
                 }
                 while (_parentElement.commandNamesTaken.Contains(buttonData.Name))
                 {
