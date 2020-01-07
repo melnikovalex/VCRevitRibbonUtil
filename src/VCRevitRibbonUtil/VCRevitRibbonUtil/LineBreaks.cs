@@ -55,7 +55,7 @@ namespace VCRevitRibbonUtil
                 lines.Add(line.ToString());
                 line.Clear();
             }
-            return String.Join(Environment.NewLine, lines);
+            return String.Join("\n", lines);
         }
     }
 }

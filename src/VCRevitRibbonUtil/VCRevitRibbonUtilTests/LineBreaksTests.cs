@@ -23,7 +23,7 @@ namespace VCRevitRibbonUtil.Tests
         public void FormatTestMoreLines()
         {
             string str2 = "this is the longest string string string string string";
-            string str2_check = $"this is the longest{Environment.NewLine}string string string{Environment.NewLine}string string";
+            string str2_check = $"this is the longest\nstring string string\nstring string";
             var str2_result = LineBreaks.Format(str2);
             Assert.AreEqual(str2_check, str2_result);
         }
@@ -32,7 +32,7 @@ namespace VCRevitRibbonUtil.Tests
         public void FormatTestArticle()
         {
             string str3 = "this is the string with an article an article an article an article an article";
-            string str3_check = $"this is the string{Environment.NewLine}with an article{Environment.NewLine}an article an article{Environment.NewLine}an article an article";
+            string str3_check = $"this is the string\nwith an article\nan article an article\nan article an article";
             var str3_result = LineBreaks.Format(str3);
             Assert.AreEqual(str3_check, str3_result);
         }
@@ -41,7 +41,7 @@ namespace VCRevitRibbonUtil.Tests
         public void FormatTest()
         {
             string str = "longwordlongword1 longwordlongword2";
-            string str_check = $"longwordlongword1{Environment.NewLine}longwordlongword2";
+            string str_check = $"longwordlongword1\nlongwordlongword2";
             var str_result = LineBreaks.Format(str);
             Assert.AreEqual(str_check, str_result);
         }
