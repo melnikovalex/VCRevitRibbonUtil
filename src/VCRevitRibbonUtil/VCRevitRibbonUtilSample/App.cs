@@ -81,6 +81,7 @@ namespace VCRevitRibbonUtilSample
                                    btn => btn
                                        .SetSmallImage(Resources._1348119594_preferences_system_16)
                                        .SetLargeImage(Resources._1348119585_preferences_system_32))
+                                   .CreateSeparator()
                                    .CreateButton<Command4>("btn4_2", "Button4")
                                    .CreateButton<Command1>("btn1_2", "Button1",
                                        btn => btn
@@ -97,6 +98,7 @@ namespace VCRevitRibbonUtilSample
                             btn => btn
                                 .SetSmallImage(Resources._1348119594_preferences_system_16)
                                 .SetLargeImage(Resources._1348119585_preferences_system_32))
+                            .CreateSeparator()
                             .CreateButton<Command4>("btn4_1", "Button4",
                                 btn => btn
                                     .SetSmallImage(Resources._1348119621_internet_web_browser_16)
