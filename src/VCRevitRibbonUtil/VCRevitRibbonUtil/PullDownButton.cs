@@ -107,11 +107,6 @@ namespace VCRevitRibbonUtil
             return this;
         }
 
-        //public PulldownButton CreateSeparator()
-        //{
-        //    return this;
-        //}
-
         public int ItemsCount
         {
             get { return Items.Count; }

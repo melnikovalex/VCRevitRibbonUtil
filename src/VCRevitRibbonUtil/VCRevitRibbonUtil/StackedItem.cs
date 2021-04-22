@@ -110,7 +110,7 @@ namespace VCRevitRibbonUtil
 
             while (_panel.Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
             {
-                buttonData.Name = buttonData.Name + "_";
+                buttonData.Name += "_";
             }
             _panel.Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
 
@@ -139,7 +139,7 @@ namespace VCRevitRibbonUtil
 
             while (_panel.Tab.Ribbon.commandNamesTaken.Contains(buttonData.Name))
             {
-                buttonData.Name = buttonData.Name + "_";
+                buttonData.Name += "_";
             }
             _panel.Tab.Ribbon.commandNamesTaken.Add(buttonData.Name);
 
