@@ -39,7 +39,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <StartProgram>$(PathToRevit)Revit.exe</StartProgram>
     <StartAction>Program</StartAction>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug 2014' OR '$(Configuration)' == 'Release 2014' ">
